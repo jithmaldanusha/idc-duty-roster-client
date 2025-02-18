@@ -1,0 +1,109 @@
+/* Sidebar container */
+.sidebar {
+    background-color: #343a40;
+    /* Bootstrap's dark color */
+    color: white;
+    height: 100vh;
+    /* Full height */
+    width: 70px;
+    /* Default minimized width */
+    transition: width 0.3s ease;
+    /* Smooth transition */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.sidebar.expanded {
+    width: 250px;
+    /* Expanded width */
+}
+
+/* Media query for screens smaller than 500px */
+@media (max-width: 500px) {
+    .sidebar.expanded {
+        width: 140px;
+        /* Expanded width for smaller screens */
+    }
+}
+
+.btn-toggle {
+    background-color: #49505700;
+    /* Darker gray */
+    color: white;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.nav-link {
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    background-color: #000000;
+}
+
+.nav-item.active .nav-link {
+    /* background-color: #49505700; */
+    /* Background for active link */
+    color: #0080ff;
+    /* Text color for active link */
+}
+
+.icon {
+    font-size: 1.5rem;
+    /* Icon size */
+}
+
+.link-text {
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+.sidebar .link-text {
+    display: none;
+    /* Hide link text when sidebar is minimized */
+}
+
+.sidebar.expanded .link-text {
+    display: inline;
+    /* Show link text when sidebar is expanded */
+}
+
+/* Main content */
+.main-content {
+    transition: margin-left 0.3s ease;
+    margin-left: 80px;
+    /* Default margin when sidebar is minimized */
+    width: calc(100% - 80px);
+    padding: 20px;
+}
+
+.main-content.collapsed {
+    margin-left: 250px;
+    /* Adjust margin when sidebar is expanded */
+    width: calc(100% - 250px);
+}
+
+/* Media query for screens smaller than 500px */
+@media (max-width: 500px) {
+    .main-content {
+        margin-left: 60px;
+        /* Reduced margin when sidebar is minimized */
+        width: calc(100% - 60px);
+    }
+
+    .main-content.collapsed {
+        margin-left: 120px;
+        /* Adjust margin when sidebar is expanded */
+        width: calc(100% - 110px);
+    }
+}
