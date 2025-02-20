@@ -32,11 +32,25 @@ export function SubmitButton({ onClick }) {
     return (
         <div className="text-center text-lg-start mt-4 pt-2">
             <button
-                type="button"
+                type="submit"
                 className="submitbtn btn btn-lg rounded-5 fs-6 fw-bold me-1"
                 onClick={onClick}
             >
                 Submit
+            </button>
+        </div>
+    );
+}
+
+export function ContinueButton({ onClick }) {
+    return (
+        <div className="text-center text-lg-start mt-4 pt-2">
+            <button
+                type="button"
+                className="continuebtn btn btn-lg rounded-5 fs-6 fw-bold me-1"
+                onClick={onClick}
+            >
+                Continue
             </button>
         </div>
     );
