@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { ClearButton, SubmitButton } from "@/app/components/formItems/buttons";
+import { SubmitButton } from "@/app/components/formItems/buttons";
 import { updateRoster } from "@/api/settings"; // Import API functions
 import Roster from "./roster";
 
@@ -13,9 +13,15 @@ export default function Settings() {
         setSelectedDate(date);
     };
 
+    // Handle sheet link change from Roster component
+    const handleLinkChange = (link) => {
+        setSheetLink(link);
+    };
+
     // Handle roster update
     const handleUpdateRoster = async (e) => {
         e.preventDefault();
+        console.log(selectedDate, sheetLink);
         if (!selectedDate || !sheetLink) {
             alert("Please fill in all fields and provide the sheet link.");
             return;
@@ -37,19 +43,24 @@ export default function Settings() {
         }
     };
 
-
-
     return (
-        <div className="container p-5 shadow rounded">
-            <h5>Update Roster</h5>
-            <form className="mt-4">
-                {/* Roster component for selecting date and displaying sheet */}
-                <Roster onDateChange={handleDateChange} />
+        <>
+            <section className="container p-5 shadow rounded">
+                <h5>Update Roster</h5>
+                <form className="mt-4">
+                    {/* Roster component for selecting date and displaying sheet */}
+                    <Roster onDateChange={handleDateChange} onLinkChange={handleLinkChange} />
 
-                <section className="d-flex mt-3">
-                    <SubmitButton onClick={handleUpdateRoster} lableName="Update Roster" />
-                </section>
-            </form>
-        </div>
+                    <section className="d-flex mt-3">
+                        <SubmitButton onClick={handleUpdateRoster} lableName="Update Roster" />
+                    </section>
+                </form>
+            </section>
+
+            <section className="container p-5 shadow rounded">
+                <h5>Add Users</h5>
+                {/*  */}
+            </section>
+        </>
     );
 }
