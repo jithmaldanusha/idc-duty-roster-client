@@ -57,7 +57,7 @@ export default function Home() {
     setShowSuccessModal(false);
 
     if (redirectAfterSuccess) {
-      router.replace('/pages/dashboard');
+      window.location.href = '/pages/dashboard';
     }
   };
 

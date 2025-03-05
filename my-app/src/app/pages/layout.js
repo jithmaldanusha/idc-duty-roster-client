@@ -10,11 +10,11 @@ export default function DashLayout({ children }) {
   };
 
   return (
-    <body className="d-flex">
+    <section className="d-flex">
       <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
       <div className={`main-content ${isCollapsed ? "" : "collapsed"}`}>
         {children}
       </div>
-    </body>
+    </section>
   );
 }

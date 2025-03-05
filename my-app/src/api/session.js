@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000'; // Backend server URL
+const API_URL = 'http://localhost:5000'; 
 
 export const createSuper = async (username, password) => {
   try {
@@ -41,15 +41,15 @@ export const loginUser = async (username, password) => {
       password,
     });
 
-    if (response.data.token) {
-      // Save token in localStorage or other secure place
-      localStorage.setItem('token', response.data.token);
-
-      // Optionally save user data, e.g., user ID or role
+    if (response.data.user.sessiontoken) {
+      localStorage.setItem('token', response.data.user.sessiontoken)
+      localStorage.setItem('userid', response.data.user.userid)
+      localStorage.setItem('user', response.data.user.username)
+      localStorage.setItem('userrole', response.data.user.role)
+      //console.log(response.data.user.sessiontoken)
       return {
         success: true,
         message: 'Login successful',
-        token: response.data.token,
       };
     } else {
       return {
@@ -63,5 +63,17 @@ export const loginUser = async (username, password) => {
       success: false,
       message: error.response?.data?.message || 'Server error',
     };
+  }
+};
+
+export const ValidateToken = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/auth/validate-token`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Token validation error:", error);
+    throw error;
   }
 };
