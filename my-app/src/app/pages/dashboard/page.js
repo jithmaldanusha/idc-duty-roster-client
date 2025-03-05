@@ -1,131 +1,51 @@
 "use client";
-import { ClearButton, SubmitButton } from '@/app/components/formItems/buttons';
-import { useState } from 'react';
+import { ValidateToken } from "@/api/session";
+import { SessionTimeout } from "@/app/components/modals/modals";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-    // State variables to manage input fields
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [completedTasks, setCompletedTasks] = useState('');
-    const [pendingTasks, setPendingTasks] = useState('');
-    const [incidentsNotes, setIncidentsNotes] = useState('');
+  const [user, setUser] = useState(null);
+  const [role, setUserRole] = useState(null);
+  const [sessionExpired, setSessionExpired] = useState(false);
+  const router = useRouter();
 
-    // Function to handle the form submission
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setSessionExpired(true);
+      return;
+    }
 
-        // Create an object for the form data
-        const formData = {
-            startDate,
-            endDate,
-            completedTasks,
-            pendingTasks,
-            incidentsNotes,
-        };
+    const validateAndHandleExpiration = async () => {
+      try {
+        console.log("Validating token:", token); // Only logs once
+        await ValidateToken(token);
+      } catch (error) {
+        localStorage.removeItem("token");
+        setSessionExpired(true);
+      }
+    }
+    validateAndHandleExpiration();
+  }, [router]);
 
-        // Submit the form data to the database (replace this with actual logic)
-        console.log('Form submitted:', formData);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const storedUserRole = localStorage.getItem("userrole");
+    setUser(storedUser);
+    setUserRole(storedUserRole);
+  }, []);
 
-        // Clear all fields after submission
-        clearForm();
-    };
+  const handleSessionTimeoutClose = () => {
+    setSessionExpired(false);
+    window.location.href = "/";
+  };
 
-    // Function to clear all form fields
-    const clearForm = () => {
-        setStartDate('');
-        setEndDate('');
-        setCompletedTasks('');
-        setPendingTasks('');
-        setIncidentsNotes('');
-    };
-
-    return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-lg-8 p-3 shadow">
-                    <h4 className="text-center mb-4">NOC-Shift Duty Handover</h4>
-                    <form onSubmit={handleSubmit} className="needs-validation" noValidate>
-                        <div className="row mb-3">
-                            <div className="col-md-6">
-                                {/* Shift Start Date and Time */}
-                                <label htmlFor="startDate" className="form-label">Shift Start Date & Time:</label>
-                                <input
-                                    type="datetime-local"
-                                    className="form-control"
-                                    id="startDate"
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                    required
-                                />
-                                <div className="invalid-feedback">Please select a start date and time.</div>
-                            </div>
-                            <div className="col-md-6">
-                                {/* Shift End Date and Time */}
-                                <label htmlFor="endDate" className="form-label">Shift End Date & Time:</label>
-                                <input
-                                    type="datetime-local"
-                                    className="form-control"
-                                    id="endDate"
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                    required
-                                />
-                                <div className="invalid-feedback">Please select an end date and time.</div>
-                            </div>
-                        </div>
-
-                        {/* Completed Tasks/Summary */}
-                        <div className="mb-3">
-                            <label htmlFor="completedTasks" className="form-label">Completed Tasks/Summary:</label>
-                            <textarea
-                                className="form-control"
-                                id="completedTasks"
-                                rows="3"
-                                value={completedTasks}
-                                onChange={(e) => setCompletedTasks(e.target.value)}
-                                required
-                            />
-                            <div className="invalid-feedback">Please enter completed tasks/summary.</div>
-                        </div>
-
-                        {/* Pending Tasks/Summary */}
-                        <div className="mb-3">
-                            <label htmlFor="pendingTasks" className="form-label">Pending Tasks/Summary:</label>
-                            <textarea
-                                className="form-control"
-                                id="pendingTasks"
-                                rows="3"
-                                value={pendingTasks}
-                                onChange={(e) => setPendingTasks(e.target.value)}
-                                required
-                            />
-                            <div className="invalid-feedback">Please enter pending tasks/summary.</div>
-                        </div>
-
-                        {/* Incidents/Notes */}
-                        <div className="mb-3">
-                            <label htmlFor="incidentsNotes" className="form-label">Incidents/Notes:</label>
-                            <textarea
-                                className="form-control"
-                                id="incidentsNotes"
-                                rows="3"
-                                value={incidentsNotes}
-                                onChange={(e) => setIncidentsNotes(e.target.value)}
-                            />
-                        </div>
-
-                        {/* Buttons */}
-                        <div className="d-flex">
-                            <SubmitButton
-                                onClick={handleSubmit}
-                            />
-                            <ClearButton
-                                onClick={clearForm}
-                            />
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <>
+      <SessionTimeout show={sessionExpired} onClose={handleSessionTimeoutClose} />
+      <h1>This is dashboard</h1>
+      <h2>Hello {role ? role : "Loading..."} : {user ? user : "Loading..."}</h2>
+    </>
+  );
 }

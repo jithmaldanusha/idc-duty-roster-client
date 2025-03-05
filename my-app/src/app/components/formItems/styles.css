@@ -17,10 +17,19 @@
 }
 
 .submitbtn {
-    background: rgba(7, 185, 236, 1)!important;
+    background: rgb(2, 201, 19)!important;
 }
 
 .submitbtn:hover {
-    background: rgb(6, 154, 195);
+    background: rgb(0, 151, 13);
+    border: 1px solid black !important;
+}
+
+.continuebtn {
+    background: rgb(2, 201, 19)!important;
+}
+
+.continuebtn:hover {
+    background: rgb(1, 143, 13)!important;
     border: 1px solid black !important;
 }

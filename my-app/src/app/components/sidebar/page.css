@@ -1,8 +1,7 @@
 /* Sidebar container */
 .sidebar {
-    background-color: #343a40;
+    background-color: #0159a1;
     /* Bootstrap's dark color */
-    color: white;
     height: 100vh;
     /* Full height */
     width: 70px;
@@ -13,6 +12,7 @@
     top: 0;
     left: 0;
     z-index: 1;
+
 }
 
 .sidebar.expanded {
@@ -29,9 +29,7 @@
 }
 
 .btn-toggle {
-    background-color: #49505700;
-    /* Darker gray */
-    color: white;
+    color: #2CAB22;
     width: 100%;
     border: none;
     padding: 10px;
@@ -48,13 +46,13 @@
 }
 
 .nav-link:hover {
-    background-color: #000000;
+    background-color: white;
 }
 
 .nav-item.active .nav-link {
     /* background-color: #49505700; */
     /* Background for active link */
-    color: #0080ff;
+    color: #2CAB22!important;
     /* Text color for active link */
 }
 
