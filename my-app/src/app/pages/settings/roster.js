@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { getRosterByDate } from "@/api/settings"; // Import API function
 import { ClearButton } from "@/app/components/formItems/buttons";
 
-export default function Roster({ onDateChange }) {
+export default function Roster({ onDateChange, onLinkChange }) {
     const [date, setDate] = useState(null);
     const [sheetLink, setSheetLink] = useState("");
     const [isLinkValid, setIsLinkValid] = useState(false);
@@ -24,9 +24,11 @@ export default function Roster({ onDateChange }) {
                 if (result && result.sheetLink) {
                     setSheetLink(result.sheetLink);
                     setIsLinkValid(true); // Mark the link as valid
+                    onLinkChange(result.sheetLink); // Notify parent of link change
                 } else {
                     setSheetLink("");
                     setIsLinkValid(false); // Mark the link as invalid
+                    onLinkChange(""); // Clear link in parent
                 }
             } catch (error) {
                 console.error("Error fetching roster:", error);
@@ -39,13 +41,16 @@ export default function Roster({ onDateChange }) {
     const handleManualLinkChange = (e) => {
         setSheetLink(e.target.value);
         setIsLinkValid(true); // Assume it's valid when manually entered
+        onLinkChange(e.target.value); // Notify parent of manual link change
     };
 
     // Clear fields
     const handleClear = () => {
         setDate(null);
         setSheetLink("");
+        onLinkChange(""); // Clear link in parent
     };
+
     return (
         <div className="container p-0">
             <section className="d-flex flex-column flex-lg-row">
@@ -88,7 +93,7 @@ export default function Roster({ onDateChange }) {
                         <label className="form-label text-end">Preview</label>
                         <iframe
                             className="border"
-                            src={sheetLink.replace("/edit", "/preview")}
+                            src={sheetLink.replace("/edit", "/pubhtml")}
                             width="100%"
                             height="600"
                             frameBorder="0"
