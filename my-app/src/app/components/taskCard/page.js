@@ -1,3 +1,4 @@
+"use client"
 import { useState, useRef, useEffect } from "react";
 
 export default function TaskCard({ task, onRemove }) {
@@ -24,8 +25,13 @@ export default function TaskCard({ task, onRemove }) {
 
     // Truncate long descriptions for the card view
     const truncateTaskDescription = (description, length) => {
-        return description.length > length ? description.substring(0, length) + "..." : description;
+        return description?.length > length ? description.substring(0, length) + "..." : description;
     };
+
+    // Check if task exists before rendering
+    if (!task) {
+        return null;
+    }
 
     return (
         <div className="card mb-3 mt-3 shadow-lg" ref={cardRef}>
@@ -73,3 +79,4 @@ const tooltipStyles = {
     zIndex: 10,
     backgroundColor: "white",
 };
+
